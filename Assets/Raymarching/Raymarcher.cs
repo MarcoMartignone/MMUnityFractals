@@ -67,11 +67,6 @@ public static class RaymarcherUtils
 public class Raymarcher : MonoBehaviour
 {
     public Material m_material;
-    public bool m_screen_space = true;
-    public bool m_enable_adaptive = true;
-    public bool m_enable_temporal = true;
-    public bool m_enable_glowline = true;
-    public bool m_dbg_show_steps;
     public int m_scene;
     public Color m_fog_color = new Color(0.16f, 0.13f, 0.20f);
     Material m_internal_material;
@@ -108,8 +103,6 @@ public class Raymarcher : MonoBehaviour
         var r = GetComponent<Renderer>();
         if (r != null) { r.sharedMaterial = m_internal_material; }
 
-
-        m_enable_adaptive_prev = m_enable_adaptive;
     }
 
     void ClearCommandBuffer()
@@ -161,22 +154,14 @@ public class Raymarcher : MonoBehaviour
     {
         if(m_internal_material == null) { return; }
 
-        m_internal_material.SetFloat("_Scene", m_scene);
-        SwitchKeyword(m_internal_material, "ENABLE_ADAPTIVE",    m_enable_adaptive );
-        SwitchKeyword(m_internal_material, "ENABLE_TEMPORAL",    m_enable_temporal );
-        SwitchKeyword(m_internal_material, "ENABLE_PATTERN",     m_enable_glowline );
-        SwitchKeyword(m_internal_material, "ENABLE_SCREENSPACE", m_screen_space    );
-        if (!m_screen_space)
-        {
-            var t = GetComponent<Transform>();
-            var r = t.rotation;
-            float angle;
-            Vector3 axis;
-            r.ToAngleAxis(out angle, out axis);
-            m_internal_material.SetVector("_Position", t.position);
-            m_internal_material.SetVector("_Rotation", new Vector4(axis.x, axis.y, axis.z, angle));
-            m_internal_material.SetVector("_Scale", t.lossyScale);
-        }
+        var t = GetComponent<Transform>();
+        var r = t.rotation;
+        float angle;
+        Vector3 axis;
+        r.ToAngleAxis(out angle, out axis);
+        m_internal_material.SetVector("_Position", t.position);
+        m_internal_material.SetVector("_Rotation", new Vector4(axis.x, axis.y, axis.z, angle));
+        m_internal_material.SetVector("_Scale", t.lossyScale);
     }
 
     void UpdateCommandBuffer()
@@ -199,17 +184,6 @@ public class Raymarcher : MonoBehaviour
             reflesh_command_buffer = true;
         }
 
-        if (m_enable_adaptive_prev != m_enable_adaptive)
-        {
-            m_enable_adaptive_prev = m_enable_adaptive;
-            reflesh_command_buffer = true;
-        }
-        if (m_dbg_show_steps_prev != m_dbg_show_steps)
-        {
-            m_dbg_show_steps_prev = m_dbg_show_steps;
-            reflesh_command_buffer = true;
-        }
-
         if (reflesh_command_buffer)
         {
             reflesh_command_buffer = false;
@@ -218,66 +192,6 @@ public class Raymarcher : MonoBehaviour
 
         if (m_cb_raymarch==null)
         {
-            if (m_enable_adaptive)
-            {
-                RenderTargetIdentifier[] rt;
-
-                m_cb_prepass = new CommandBuffer();
-                m_cb_prepass.name = "Raymarcher Adaptive PrePass";
-
-                int odepth      = Shader.PropertyToID("ODepth");
-                int odepth_prev = Shader.PropertyToID("ODepthPrev");
-                int ovelocity   = Shader.PropertyToID("OVelocity");
-                int qdepth      = Shader.PropertyToID("QDepth");
-                int qdepth_prev = Shader.PropertyToID("QDepthPrev");
-                int hdepth      = Shader.PropertyToID("HDepth");
-                int hdepth_prev = Shader.PropertyToID("HDepthPrev");
-                int adepth      = Shader.PropertyToID("ADepth");
-                int adepth_prev = Shader.PropertyToID("ADepthPrev");
-
-                m_cb_prepass.GetTemporaryRT(odepth,     cam.pixelWidth / 8, cam.pixelHeight / 8, 0, FilterMode.Point, RenderTextureFormat.RFloat);
-                m_cb_prepass.GetTemporaryRT(odepth_prev,cam.pixelWidth / 8, cam.pixelHeight / 8, 0, FilterMode.Point, RenderTextureFormat.RFloat);
-                m_cb_prepass.GetTemporaryRT(ovelocity,  cam.pixelWidth / 8, cam.pixelHeight / 8, 0, FilterMode.Point, RenderTextureFormat.RHalf);
-                m_cb_prepass.GetTemporaryRT(qdepth,     cam.pixelWidth / 4, cam.pixelHeight / 4, 0, FilterMode.Point, RenderTextureFormat.RFloat);
-                m_cb_prepass.GetTemporaryRT(qdepth_prev,cam.pixelWidth / 4, cam.pixelHeight / 4, 0, FilterMode.Point, RenderTextureFormat.RFloat);
-                m_cb_prepass.GetTemporaryRT(hdepth,     cam.pixelWidth / 2, cam.pixelHeight / 2, 0, FilterMode.Point, RenderTextureFormat.RFloat);
-                m_cb_prepass.GetTemporaryRT(hdepth_prev,cam.pixelWidth / 2, cam.pixelHeight / 2, 0, FilterMode.Point, RenderTextureFormat.RFloat);
-                m_cb_prepass.GetTemporaryRT(adepth,     cam.pixelWidth / 1, cam.pixelHeight / 1, 0, FilterMode.Point, RenderTextureFormat.RFloat);
-                m_cb_prepass.GetTemporaryRT(adepth_prev,cam.pixelWidth / 1, cam.pixelHeight / 1, 0, FilterMode.Point, RenderTextureFormat.RFloat);
-
-                rt = new RenderTargetIdentifier[2] { odepth, ovelocity };
-                m_cb_prepass.SetGlobalTexture("g_depth_prev", odepth_prev);
-                m_cb_prepass.SetRenderTarget(rt, odepth);
-                m_cb_prepass.DrawMesh(m_quad, Matrix4x4.identity, m_internal_material, 0, 1);
-
-                m_cb_prepass.Blit(odepth, odepth_prev);
-                m_cb_prepass.SetGlobalTexture("g_velocity", ovelocity);
-
-                m_cb_prepass.SetRenderTarget(qdepth);
-                m_cb_prepass.SetGlobalTexture("g_depth", odepth);
-                m_cb_prepass.SetGlobalTexture("g_depth_prev", qdepth_prev);
-                m_cb_prepass.DrawMesh(m_quad, Matrix4x4.identity, m_internal_material, 0, 2);
-
-                m_cb_prepass.Blit(qdepth, qdepth_prev);
-
-                m_cb_prepass.SetRenderTarget(hdepth);
-                m_cb_prepass.SetGlobalTexture("g_depth", qdepth);
-                m_cb_prepass.SetGlobalTexture("g_depth_prev", hdepth_prev);
-                m_cb_prepass.DrawMesh(m_quad, Matrix4x4.identity, m_internal_material, 0, 3);
-
-                m_cb_prepass.Blit(hdepth, hdepth_prev);
-
-                m_cb_prepass.SetRenderTarget(adepth);
-                m_cb_prepass.SetGlobalTexture("g_depth", hdepth);
-                m_cb_prepass.SetGlobalTexture("g_depth_prev", adepth_prev);
-                m_cb_prepass.DrawMesh(m_quad, Matrix4x4.identity, m_internal_material, 0, 4);
-
-                m_cb_prepass.Blit(adepth, adepth_prev);
-                m_cb_prepass.SetGlobalTexture("g_depth", adepth);
-
-                cam.AddCommandBuffer(CameraEvent.BeforeGBuffer, m_cb_prepass);
-            }
-
             m_cb_raymarch = new CommandBuffer();
             m_cb_raymarch.name = "Raymarcher";
             m_cb_raymarch.DrawMesh(m_quad, Matrix4x4.identity, m_internal_material, 0, 0);

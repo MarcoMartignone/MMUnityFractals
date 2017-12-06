@@ -219,8 +219,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 265927908}
-  m_LocalRotation: {x: 0.17080718, y: 0.7008395, z: -0.17892136, w: 0.6690561}
-  m_LocalPosition: {x: -2.5359871, y: 0.80050004, z: -0.99775934}
+  m_LocalRotation: {x: 0.122201644, y: -0.4958846, z: 0.070723094, w: 0.8568334}
+  m_LocalPosition: {x: 1.5535758, y: 0.80050004, z: -2.5257268}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1525505908}
@@ -453,6 +453,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &648882646 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1970242301155502, guid: 9c66677964a658048b867e395bd03dc2,
+    type: 2}
+  m_PrefabInternal: {fileID: 479314787}
+--- !u!114 &648882650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 648882646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97321287d985e234eb5eb80dd8015a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _threshold: 4.52
 --- !u!1 &787687310
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,91 +536,6 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!21 &836787873
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Raymarcher2
-  m_Shader: {fileID: 4800000, guid: 44055804a40ff9e4098900dfa3987b97, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _Adaptive: 0
-    - _BumpScale: 1
-    - _Cutoff: 0.5
-    - _DetailNormalMapScale: 1
-    - _DstBlend: 0
-    - _EmissionScaleUI: 0
-    - _EnableAdaptive: 1
-    - _EnablePattern: 1
-    - _EnableScreenSpace: 1
-    - _EnableTemporal: 1
-    - _Glossiness: 0.7
-    - _Metallic: 0
-    - _Mode: 0
-    - _OcclusionStrength: 1
-    - _Parallax: 0.02
-    - _Pattern: 1
-    - _Scene: 1
-    - _ScreenSpace: 0
-    - _SrcBlend: 1
-    - _Temporal: 0
-    - _UVSec: 0
-    - _ZWrite: 1
-    - g_scene: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
-    - _Position: {r: 0.32, g: -0.69, b: -8.43, a: 0}
-    - _Rotation: {r: 0.9813928, g: 0.13125485, b: 0.14014733, a: 320.67764}
-    - _Scale: {r: 10, g: 10, b: 10, a: 0}
 --- !u!1001 &994676032
 Prefab:
   m_ObjectHideFlags: 0
@@ -884,12 +816,97 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c5edb5b4b2a48f4285a2338f622e8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rotate_by_time: 1
+  m_rotate_by_time: 0
   m_rotate_speed: -10
   m_camera: {fileID: 265927910}
   m_look_target: {fileID: 1470294557}
   m_follow_strength: 0.2
   m_target_offset: {x: 0, y: 1, z: 2}
+--- !u!21 &1548469636
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Raymarcher2
+  m_Shader: {fileID: 4800000, guid: 44055804a40ff9e4098900dfa3987b97, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Adaptive: 0
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EmissionScaleUI: 0
+    - _EnableAdaptive: 1
+    - _EnablePattern: 1
+    - _EnableScreenSpace: 1
+    - _EnableTemporal: 1
+    - _Glossiness: 0.7
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Pattern: 1
+    - _Scene: 1
+    - _ScreenSpace: 0
+    - _SrcBlend: 1
+    - _Temporal: 0
+    - _UVSec: 0
+    - _ZWrite: 1
+    - g_scene: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
+    - _Position: {r: 0.32, g: -0.69, b: -8.43, a: 0}
+    - _Rotation: {r: 0.9813928, g: 0.13125485, b: 0.14014733, a: 320.67764}
+    - _Scale: {r: 10, g: 10, b: 10, a: 0}
 --- !u!1 &1894352658
 GameObject:
   m_ObjectHideFlags: 0

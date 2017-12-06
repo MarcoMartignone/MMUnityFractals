@@ -3,6 +3,8 @@
 
 #include "foundation.cginc"
 
+static float julia_threshold = 10;
+
 float Julia(float3 pos) {
 
 	int iterations = 16;
@@ -21,7 +23,5 @@ float Julia(float3 pos) {
 	return  0.5 * r * log(r) / length(dp);
 
 }
-
-
 
 #endif // distance_functions_h

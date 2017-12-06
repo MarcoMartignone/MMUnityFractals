@@ -7,8 +7,8 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Raymarcher
-  m_Shader: {fileID: 4800000, guid: 44055804a40ff9e4098900dfa3987b97, type: 3}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 4800000, guid: 54fe68f112bb7e347a9041ff5961790f, type: 3}
+  m_ShaderKeywords: ENABLE_PATTERN ENABLE_TEMPORAL
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
