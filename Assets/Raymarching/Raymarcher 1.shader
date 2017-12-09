@@ -43,7 +43,7 @@ float map(float3 p)
     p = localize(p);
 
    //return Julia(p, _Threshold);
-   return DE(p);
+   return octahedron(p);
 }
 
 float3 guess_normal(float3 p)

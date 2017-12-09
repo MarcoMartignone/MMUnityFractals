@@ -113,4 +113,75 @@ float DE(
 
 ///////////////
 
+float3x3  rotationMatrix3(float3 v, float angle)
+{
+	float c = cos(radians(angle));
+	float s = sin(radians(angle));
+	
+	return float3x3(c + (1.0 - c) * v.x * v.x, (1.0 - c) * v.x * v.y - s * v.z, (1.0 - c) * v.x * v.z + s * v.y,
+		(1.0 - c) * v.x * v.y + s * v.z, c + (1.0 - c) * v.y * v.y, (1.0 - c) * v.y * v.z - s * v.x,
+		(1.0 - c) * v.x * v.z - s * v.y, (1.0 - c) * v.y * v.z + s * v.x, c + (1.0 - c) * v.z * v.z
+		);
+}
+
+float trap(float3 p, float3x3 fracRotation2, float3 O3, float cylHeight, float cylRad, float val){
+	//	p=p.yxz;
+	p = mul(p, fracRotation2);
+		
+	return abs(length(p.xz-O3.xy)-val);
+	p.x-=val;
+	return max(abs(p.z)-cylHeight,length(p.xy)-cylRad);
+}	
+
+// The fractal distance estimation calculation
+float octahedron(
+		float3 z,
+		float Scale = 1.53332,
+		float3 Offset = float3(0.48246, 0.09649, 0.15789),
+		float Angle1 = -119.99900,
+		float3 Rot1 = float3(1.00000, -0.50850, 0.44068),
+		float Angle2 = 29.99880,
+		float3 Rot2 = float3(0.50848, 1.00000, -0.62800),
+		float val = 0,
+		float cylRad = 0.10000,
+		float cylHeight = 2.00000,
+		float3 O3 = float3(1, 1, 1),
+		float Iterations = 26,
+		float ColorIterations = 2
+		) {
+
+	float4 orbitTrap = float4(10000.0, 10000.0, 10000.0, 10000.0);
+
+	float3x3 fracRotation1 = rotationMatrix3(normalize(Rot1), Angle1);
+	float3x3 fracRotation2 = rotationMatrix3(normalize(Rot2), Angle2);
+
+	float r;
+	
+	// Iterate to compute the distance estimator.
+	int n = 0;
+	float d = 10900.0;
+	while (n < Iterations) {
+		z = mul(z, fracRotation1);
+		
+		if (z.x+z.y<0.0) z.xy = -z.yx;
+		if (z.x+z.z<0.0) z.xz = -z.zx;
+		if (z.x-z.y<0.0) z.xy = z.yx;
+		if (z.x-z.z<0.0) z.xz = z.zx;
+		
+		z = z*Scale - Offset*(Scale-1.0);
+		
+		r = dot(z, z);
+            if (n< ColorIterations)  orbitTrap = min(orbitTrap, abs(float4(z,r)));
+		
+		n++;
+
+
+	d = min(d, trap(z, fracRotation2, O3, cylHeight, cylRad, val) * pow(Scale, -float(n)));
+	}
+return d;
+	
+}
+
+///////////////////////
+
 #endif // distance_functions_h
