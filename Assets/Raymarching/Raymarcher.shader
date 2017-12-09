@@ -56,7 +56,7 @@ float map(float3 p)
         return pseudo_kleinian( (p+float3(0.0, -0.5, 0.0)).xzy );
     }
     else if (_Scene==1) {
-        return Julia(p);
+        return Julia(p, 10);
     }
     else {
         return pseudo_knightyan( (p+float3(0.0, -0.5, 0.0)).xzy );

@@ -10,6 +10,9 @@ Properties {
 
     _Scene("Scene", Float) = 0
 
+    // Julia 
+    _Threshold("Threshold", Float) = 10
+
 }
 
 CGINCLUDE
@@ -24,6 +27,7 @@ CGINCLUDE
 #define MAX_MARCH_SINGLE_GBUFFER_PASS 100
 
 int _Scene;
+int _Threshold;
 float3 _Position;
 float4 _Rotation;
 float3 _Scale;
@@ -38,16 +42,8 @@ float map(float3 p)
 {
     p = localize(p);
 
-    if(_Scene==0) {
-        return pseudo_kleinian( (p+float3(0.0, -0.5, 0.0)).xzy );
-    }
-    else if (_Scene==1) {
-        return Julia(p);
-    }
-    else {
-        return pseudo_knightyan( (p+float3(0.0, -0.5, 0.0)).xzy );
-    }
-
+   //return Julia(p, _Threshold);
+   return DE(p);
 }
 
 float3 guess_normal(float3 p)
@@ -70,19 +66,11 @@ struct vs_out
     float4 spos : TEXCOORD0;
 };
 
-
 vs_out vert(ia_out I)
 {
     vs_out O;
     O.vertex = UnityObjectToClipPos(I.vertex);
     O.spos = O.vertex;
-    return O;
-}
-
-vs_out vert_dummy(ia_out I)
-{
-    vs_out O;
-    O.vertex = O.spos = float4(0.0, 0.0, 0.0, 1.0);
     return O;
 }
 
@@ -186,39 +174,6 @@ opass_out frag_opass(vs_out I)
     return O;
 }
 
-
-distance_out adaptive_pass(vs_out I, const int max_steps)
-{
-#if UNITY_UV_STARTS_AT_TOP
-    I.spos.y *= -1.0;
-#endif
-    float2 tpos = I.spos.xy*0.5+0.5;
-    float2 pos = I.spos.xy;
-    pos.x *= _ScreenParams.x / _ScreenParams.y;
-
-    float num_steps, last_distance, total_distance = sample_upper_depth(tpos);
-    float3 ray_pos;
-    raymarching(pos, max_steps, total_distance, num_steps, last_distance, ray_pos);
-
-    distance_out O;
-    O.distance = total_distance;
-    return O;
-}
-
-distance_out frag_qpass(vs_out v) { return adaptive_pass(v, MAX_MARCH_QPASS); }
-distance_out frag_hpass(vs_out v) { return adaptive_pass(v, MAX_MARCH_HPASS); }
-distance_out frag_apass(vs_out v) { return adaptive_pass(v, MAX_MARCH_APASS); }
-
-sampler2D g_qsteps;
-sampler2D g_hsteps;
-sampler2D g_asteps;
-half4 frag_show_steps(vs_out I) : SV_Target0
-{
-    float2 t = I.spos.xy*0.5+0.5;
-    float3 l = float3(tex2D(g_qsteps, t).x, tex2D(g_hsteps, t).x, tex2D(g_asteps, t).x);
-    return float4(l.xyz, 1.0);
-}
-
 ENDCG
 
 SubShader {
@@ -250,54 +205,7 @@ CGPROGRAM
 #pragma fragment frag_opass
 #pragma multi_compile ___ ENABLE_SCREENSPACE
 ENDCG
-    }
-
-    Pass {
-        Name "QDepth"
-        ZWrite Off
-        ZTest Always
-CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag_qpass
-#pragma multi_compile ___ ENABLE_SCREENSPACE
-#pragma multi_compile ___ ENABLE_TEMPORAL
-ENDCG
-    }
-
-    Pass {
-        Name "HDepth"
-        ZWrite Off
-        ZTest Always
-CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag_hpass
-#pragma multi_compile ___ ENABLE_SCREENSPACE
-#pragma multi_compile ___ ENABLE_TEMPORAL
-ENDCG
-    }
-    
-    Pass {
-        Name "ADepth"
-        ZWrite Off
-        ZTest Always
-CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag_apass
-#pragma multi_compile ___ ENABLE_SCREENSPACE
-#pragma shader_feature ___ ENABLE_TEMPORAL
-ENDCG
-    }
-
-    Pass {
-        Name "ShowSteps"
-        ZWrite Off
-        ZTest Always
-        Blend SrcAlpha OneMinusSrcAlpha
-CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag_show_steps
-ENDCG
-    }
+    } 
 }
 Fallback Off
 }
