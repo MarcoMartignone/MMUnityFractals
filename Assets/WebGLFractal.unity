@@ -393,7 +393,7 @@ Prefab:
     - target: {fileID: 114139891120214724, guid: 9c66677964a658048b867e395bd03dc2,
         type: 2}
       propertyPath: threshold
-      value: 10
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9c66677964a658048b867e395bd03dc2, type: 2}
@@ -463,6 +463,96 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &682790971
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Raymarcher
+  m_Shader: {fileID: 4800000, guid: 54fe68f112bb7e347a9041ff5961790f, type: 3}
+  m_ShaderKeywords: ENABLE_PATTERN ENABLE_TEMPORAL
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Angle1: -119.999
+    - _Angle2: 29.9988
+    - _BumpScale: 1
+    - _ColorIterations: 2
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnableAdaptive: 0
+    - _EnablePattern: 1
+    - _EnableScreenSpace: 0
+    - _EnableTemporal: 1
+    - _Glossiness: 0.7
+    - _Iterations: 26
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Scale: 1.53332
+    - _Scene: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    - _cylHeight: 2
+    - _cylRad: 0.1
+    - _val: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _O3: {r: 1, g: 1, b: 1, a: 1}
+    - _Offset: {r: 0.48246, g: 0.09649, b: 0.15789, a: 1}
+    - _Position: {r: 0.32, g: -0.69, b: -8.43, a: 0}
+    - _Rot1: {r: 1, g: -0.5085, b: 0.44068, a: 1}
+    - _Rot2: {r: 0.50848, g: 1, b: -0.628, a: 1}
+    - _Rotation: {r: 0.9813928, g: 0.13125485, b: 0.14014733, a: 320.67764}
+    - _Scale: {r: 10, g: 10, b: 10, a: 0}
 --- !u!1 &787687310
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,85 +852,6 @@ Material:
     - _Position: {r: 0, g: 0, b: 0, a: 0}
     - _Rotation: {r: 1, g: 0, b: 0.07, a: 0.86}
     - _Scale: {r: 1, g: 1, b: 1, a: 0}
---- !u!21 &1274216573
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Raymarcher
-  m_Shader: {fileID: 4800000, guid: 54fe68f112bb7e347a9041ff5961790f, type: 3}
-  m_ShaderKeywords: ENABLE_PATTERN ENABLE_TEMPORAL
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _BumpScale: 1
-    - _Cutoff: 0.5
-    - _DetailNormalMapScale: 1
-    - _DstBlend: 0
-    - _EnableAdaptive: 0
-    - _EnablePattern: 1
-    - _EnableScreenSpace: 0
-    - _EnableTemporal: 1
-    - _Glossiness: 0.7
-    - _Metallic: 0
-    - _Mode: 0
-    - _OcclusionStrength: 1
-    - _Parallax: 0.02
-    - _Scene: 1
-    - _SrcBlend: 1
-    - _Threshold: 10
-    - _UVSec: 0
-    - _ZWrite: 1
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Position: {r: 0.32, g: -0.69, b: -8.43, a: 0}
-    - _Rotation: {r: 0.9813928, g: 0.13125485, b: 0.14014733, a: 320.67764}
-    - _Scale: {r: 10, g: 10, b: 10, a: 0}
 --- !u!4 &1470294557 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4703782585710722, guid: 9c66677964a658048b867e395bd03dc2,
@@ -894,6 +905,35 @@ MonoBehaviour:
   m_look_target: {fileID: 1470294557}
   m_follow_strength: 0.2
   m_target_offset: {x: 0, y: 1, z: 2}
+--- !u!1 &1710719313 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1970242301155502, guid: 9c66677964a658048b867e395bd03dc2,
+    type: 2}
+  m_PrefabInternal: {fileID: 479314787}
+--- !u!114 &1710719317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1710719313}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d11a2bfeeb5e7143b92d7516ce0328e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_material: {fileID: 2100000, guid: 55052986b9c00444982f7699e4c31e36, type: 2}
+  Scale: 1.53332
+  Offset: {x: 0.48246, y: 0.09649, z: 0.15789}
+  Angle1: -119.999
+  Rot1: {x: 1, y: -0.5085, z: 0.44068}
+  Angle2: 29.9988
+  Rot2: {x: 0.50848, y: 1, z: -0.628}
+  val: 0
+  cylRad: 0.1
+  cylHeight: 2
+  O3: {x: 1, y: 1, z: 1}
+  Iterations: 26
+  ColorIterations: 2
 --- !u!1 &1894352658
 GameObject:
   m_ObjectHideFlags: 0
@@ -1097,7 +1137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_material: {fileID: 2100000, guid: 55052986b9c00444982f7699e4c31e36, type: 2}
   m_scene: 0
-  threshold: 10
 --- !u!23 &2124459949
 MeshRenderer:
   m_ObjectHideFlags: 0

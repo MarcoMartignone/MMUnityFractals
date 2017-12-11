@@ -10,8 +10,19 @@ Properties {
 
     _Scene("Scene", Float) = 0
 
-    // Julia 
-    _Threshold("Threshold", Float) = 10
+    // Octahedron 
+    _Scale("Scale", Float) = 1.53332
+    _Offset("Offset", Vector) = (0.48246, 0.09649, 0.15789)
+    _Angle1("Angle1", Float) = -119.99900
+    _Rot1("Rot1", Vector) = (1.00000, -0.50850, 0.44068)
+    _Angle2("Angle2", Float) = 29.99880
+    _Rot2("Rot2", Vector) = (0.50848, 1.00000, -0.62800)
+    _val("val", Float) = 0
+    _cylRad("cylRad", Float) = 0.10000
+    _cylHeight("cylHeight", Float) = 2.00000
+    _O3("O3", Vector) = (1, 1, 1)
+    _Iterations("Iterations", Float) = 26
+    _ColorIterations("ColorIterations", Float) = 2
 
 }
 
@@ -27,10 +38,24 @@ CGINCLUDE
 #define MAX_MARCH_SINGLE_GBUFFER_PASS 100
 
 int _Scene;
-int _Threshold;
 float3 _Position;
 float4 _Rotation;
 float3 _Scale;
+
+// Octahedro
+float _OctahedroScale;
+float3 _Offset;
+float _Angle1;
+float3 _Rot1;
+float _Angle2;
+float3 _Rot2;
+float _val;
+float _cylRad;
+float _cylHeight;
+float3 _O3;
+float _Iterations;
+float _ColorIterations;
+
 
 float3 localize(float3 p)
 {
@@ -43,7 +68,21 @@ float map(float3 p)
     p = localize(p);
 
    //return Julia(p, _Threshold);
-   return octahedron(p);
+   return octahedron(
+		p,
+		_OctahedroScale,
+		_Offset,
+		_Angle1,
+		_Rot1,
+		_Angle2,
+		_Rot2,
+	    _val,
+		_cylRad,
+		_cylHeight,
+		_O3,
+		_Iterations,
+		_ColorIterations
+		);
 }
 
 float3 guess_normal(float3 p)

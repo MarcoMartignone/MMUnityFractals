@@ -11,9 +11,6 @@ public class Raymarcher : MonoBehaviour
 {
     public Material m_material;
     public int m_scene;
-
-    [Header("Julia")]
-    public int threshold = 10;
     Material m_internal_material;
     Vector2 m_resolution_prev;
     Mesh m_quad;
@@ -62,7 +59,6 @@ public class Raymarcher : MonoBehaviour
         if(m_internal_material == null) { return; }
 
         m_internal_material.SetFloat("_Scene", m_scene);
-        m_internal_material.SetFloat("_Threshold", threshold);
 
         var t = GetComponent<Transform>();
         var r = t.rotation;
