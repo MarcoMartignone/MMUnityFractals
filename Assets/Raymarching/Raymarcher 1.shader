@@ -35,7 +35,7 @@ CGINCLUDE
 #define MAX_MARCH_QPASS 40
 #define MAX_MARCH_HPASS 20
 #define MAX_MARCH_APASS 5
-#define MAX_MARCH_SINGLE_GBUFFER_PASS 100
+#define MAX_MARCH_SINGLE_GBUFFER_PASS 500
 
 int _Scene;
 float3 _Position;
@@ -67,22 +67,7 @@ float map(float3 p)
 {
     p = localize(p);
 
-   //return Julia(p, _Threshold);
-   return octahedron(
-		p,
-		_OctahedroScale,
-		_Offset,
-		_Angle1,
-		_Rot1,
-		_Angle2,
-		_Rot2,
-	    _val,
-		_cylRad,
-		_cylHeight,
-		_O3,
-		_Iterations,
-		_ColorIterations
-		);
+    return kaleidoscopic_IFS(p);
 }
 
 float3 guess_normal(float3 p)
@@ -181,38 +166,6 @@ gbuffer_out frag_gbuffer(vs_out I)
     return O;
 }
 
-struct distance_out
-{
-    float4 distance : SV_Target0;
-};
-
-struct opass_out
-{
-    float distance : SV_Target0;
-    half diff : SV_Target1;
-};
-
-#define DIFF_THRESHILD 0.0001
-
-opass_out frag_opass(vs_out I)
-{
-#if UNITY_UV_STARTS_AT_TOP
-    I.spos.y *= -1.0;
-#endif
-    float2 tpos = I.spos.xy*0.5+0.5;
-    float2 pos = I.spos.xy;
-    pos.x *= _ScreenParams.x / _ScreenParams.y;
-
-    float num_steps, last_distance, total_distance = _ProjectionParams.y;
-    float3 ray_pos;
-    raymarching(pos, MAX_MARCH_OPASS, total_distance, num_steps, last_distance, ray_pos);
-
-    opass_out O;
-    O.distance = total_distance;
-    O.diff = total_distance - tex2D(g_depth_prev, tpos).x;
-    return O;
-}
-
 ENDCG
 
 SubShader {
@@ -232,17 +185,6 @@ CGPROGRAM
 #pragma vertex vert
 #pragma fragment frag_gbuffer
 #pragma multi_compile ___ UNITY_HDR_ON
-ENDCG
-    }
-    
-    Pass {
-        Name "ODepth"
-        ZWrite Off
-        ZTest Always
-CGPROGRAM
-#pragma vertex vert
-#pragma fragment frag_opass
-#pragma multi_compile ___ ENABLE_SCREENSPACE
 ENDCG
     } 
 }
